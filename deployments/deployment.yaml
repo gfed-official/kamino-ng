@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kamino-ng
+  namespace: goclone
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kamino-ng
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: kamino-ng
+        version: v1
+    spec:
+      containers:
+        - name: kamino-ng
+          image: evanjd711/goclone:latest
+          ports:
+            - name: http
+              containerPort: 8080
+          livenessProbe:
+            httpGet:
+              path: /api/v1/health
+              port: 8080
+            initialDelaySeconds: 5
+            periodSeconds: 3
+          imagePullPolicy: Always
